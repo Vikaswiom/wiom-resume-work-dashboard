@@ -81,7 +81,7 @@ details summary{cursor:pointer;color:var(--fg)}
     <h1>Resume Work campaign</h1>
     <div class="meta">
       <span class="live"><span class="dot" id="dot"></span><span id="updated">Loading live numbers…</span></span>
-      <span>PN 1795673193</span><span>In-app 1795673011</span><span>Launched 26 Nov 2026</span>
+      <span>In-app 1795673011</span><span>Launched 26 Nov 2026</span>
     </div>
     <p class="take" id="take"><span class="sk">Loading the latest numbers from the campaign.</span></p>
     <div class="err" id="err" hidden></div>
@@ -101,22 +101,11 @@ details summary{cursor:pointer;color:var(--fg)}
     <div class="bars" id="funnel"></div>
   </section>
 
-  <div class="grid2">
-    <section class="card">
-      <h2>CleverTap delivery</h2>
-      <div class="ct" id="ct"></div>
-      <p class="note" id="ct-note"></p>
-    </section>
-    <section class="card">
-      <h2>Did the PN help?</h2>
-      <p class="note">Campaign CSPs who clicked the PN, compared with those who didn't.</p>
-      <table>
-        <thead><tr><th></th><th class="r">CSPs</th><th class="r">Opened in-app</th><th class="r">Resumed</th></tr></thead>
-        <tbody id="pn"></tbody>
-      </table>
-      <p class="note" id="pn-note"></p>
-    </section>
-  </div>
+  <section class="card">
+    <h2>In-app reach in CleverTap</h2>
+    <div class="ct" id="ct"></div>
+    <p class="note" id="ct-note"></p>
+  </section>
 
   <div class="grid2">
     <section class="card">
@@ -231,26 +220,14 @@ details summary{cursor:pointer;color:var(--fg)}
       hz.appendChild(c);
     });
 
-    var live = d.ct_live || {}, man = d.clevertap || {}, box = $('ct'); box.replaceChildren();
-    var tiles = [['Clicked the PN', live.pn_clicked_csps, live.pn_click_taps != null ? fmt(live.pn_click_taps) + ' taps' : ''],
-                 ['Shown the in-app', live.inapp_shown_csps, live.inapp_views != null ? fmt(live.inapp_views) + ' views' : '']];
-    if (man.pn_sent != null) tiles.unshift(['PN sent', man.pn_sent, man.as_of ? 'as of ' + man.as_of : '']);
-    tiles.forEach(function (x) {
-      var dv = el('div'); dv.appendChild(el('span', null, x[0])); dv.appendChild(el('b', null, fmt(x[1]))); if (x[2]) dv.appendChild(el('span', null, x[2])); box.appendChild(dv);
+    var live = d.ct_live || {}, box = $('ct'); box.replaceChildren();
+    [['Shown the in-app', live.inapp_shown_csps, 'campaign CSPs'], ['Times shown', live.inapp_views, 'all impressions'],
+     ['Opened and tracked', d.opened, 'from the in-app itself']].forEach(function (x) {
+      var dv = el('div'); dv.appendChild(el('span', null, x[0])); dv.appendChild(el('b', null, fmt(x[1]))); dv.appendChild(el('span', null, x[2])); box.appendChild(dv);
     });
     txt('ct-note', live.error ? 'CleverTap numbers are unavailable right now: ' + live.error
-      : 'Unique CSPs, live from CleverTap (refreshed every 5 minutes). PN 1795673193 · in-app 1795673011. CleverTap does not report how many PNs were delivered.');
-    var pb = $('pn'); pb.replaceChildren();
-    if (d.pn) {
-      [['Clicked the PN', d.pn.clickers], ['Didn\u2019t click', d.pn.non_clickers]].forEach(function (x) {
-        var tr = el('tr'), g = x[1];
-        tr.appendChild(el('td', null, x[0])); tr.appendChild(el('td', 'r', fmt(g.csps)));
-        tr.appendChild(el('td', 'r', fmt(g.opened) + ' (' + pct(g.opened, g.csps) + ')'));
-        tr.appendChild(el('td', 'r', fmt(g.resumed) + ' (' + pct(g.resumed, g.csps) + ')'));
-        pb.appendChild(tr);
-      });
-      txt('pn-note', 'Percentages are of each group. CSPs who didn\u2019t click can still see the in-app when they open the app.');
-    } else txt('pn-note', 'Waiting for CleverTap numbers.');
+      : live.inapp_shown_csps == null ? 'Waiting for CleverTap numbers.'
+      : 'Live from CleverTap for in-app 1795673011, refreshed every 5 minutes. "Shown" and "opened" should match; a gap means some opens were not tracked.');
     txt('outside', d.outside_csps ? fmt(d.outside_csps) + ' CSPs outside the campaign list also opened it and are not counted.' : '');
   }
 
