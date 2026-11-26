@@ -4,4 +4,3 @@ Public page for the CSP "Resume Work" in-app campaign (in-app 1795673011, 169 CS
 
 - Page: `index.html` (static, no build). Loads numbers on open and every 60 s via JSONP from the tracking Apps Script `?action=campaign` (counts only — no CSP ids; digits in typed reasons masked).
 - Backend: `campaignStats_()` / `campaignCompute_()` in the tracking sheet's Apps Script (`Code.gs`), reading tab `ResumeWork`. Cached 60 s.
-- CleverTap: in-app impressions (Notification Viewed, wzrk_id 1795673011_*) pulled live by the script, keys in Script properties.
