@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Resume Work Campaign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap">
+<style>
+/* Layout: one column of cards on phone, two-up grids on wider screens; brand pink for the campaign, green/red only for resume vs decline. */
+:root{
+  --bg:#F7F5F8;--panel:#FFFFFF;--fg:#1A1426;--muted:#6B6280;--line:#ECE6F1;
+  --brand:#D9008D;--brand-soft:#FCE4F2;--ok:#138A4B;--ok-soft:#E3F5EB;--bad:#C2361B;--bad-soft:#FCE9E4;--warn:#A86500;--track:#F1ECF5;
+  --font:'Inter','Noto Sans Devanagari',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141018;--panel:#1E1924;--fg:#F3EEF7;--muted:#A79DB8;--line:#2E2738;
+  --brand:#F04DB0;--brand-soft:#3A1830;--ok:#4CC488;--ok-soft:#163326;--bad:#F07A5E;--bad-soft:#3A1E18;--warn:#E3A645;--track:#2A2333;
+  color-scheme:dark;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--brand)}
+h1{margin:0;font-size:28px;line-height:1.2;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{margin:0;font-size:16px;font-weight:600;text-wrap:balance}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.live{display:inline-flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.dot.stale{background:var(--warn)}
+.take{margin:6px 0 0;font-size:16px;max-width:68ch}
+.take b{font-variant-numeric:tabular-nums}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile .l{font-size:13px;color:var(--muted)}
+.tile .v{font-size:32px;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
+.tile .s{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tile.ok .v{color:var(--ok)}.tile.bad .v{color:var(--bad)}.tile.brand .v{color:var(--brand)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.note{margin:0;font-size:13px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(110px,38%) 1fr;gap:10px;align-items:center}
+.bar .k{font-size:14px;min-width:0}
+.bar .t{position:relative;height:26px;background:var(--track);border-radius:6px;overflow:hidden}
+.bar .f{position:absolute;inset:0 auto 0 0;background:var(--brand);border-radius:6px;transition:width .6s ease}
+.bar .f.ok{background:var(--ok)}.bar .f.bad{background:var(--bad)}.bar .f.mute{background:var(--muted);opacity:.55}
+.bar .n{position:absolute;left:8px;top:0;bottom:0;display:flex;align-items:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--fg)}
+@media (prefers-reduced-motion:reduce){.bar .f{transition:none}}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+th{font-size:12px;color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right}
+.quotes{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto}
+.q{border-left:3px solid var(--bad);background:var(--bad-soft);border-radius:0 10px 10px 0;padding:10px 12px;font-size:14px}
+.q .m{font-size:12px;color:var(--muted);margin-top:4px}
+.cols{display:flex;align-items:flex-end;gap:6px;height:150px;padding-top:18px;overflow-x:auto}
+.col{flex:0 1 64px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;min-width:34px}
+.col .b{width:100%;background:var(--brand);border-radius:4px 4px 0 0;min-height:2px}
+.col .c{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.col .h{font-size:11px;color:var(--muted);white-space:nowrap}
+.ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.ct div{display:flex;flex-direction:column}
+.ct span{font-size:12px;color:var(--muted)}
+.ct b{font-size:22px;font-variant-numeric:tabular-nums}
+.empty{font-size:14px;color:var(--muted)}
+.err{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:10px 12px;font-size:14px}
+details{font-size:13px;color:var(--muted)}
+details summary{cursor:pointer;color:var(--fg)}
+.sk{color:transparent;background:var(--track);border-radius:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">WIOM · CSP partner campaign</span>
+    <h1>Resume Work campaign</h1>
+    <div class="meta">
+      <span class="live"><span class="dot" id="dot"></span><span id="updated">Loading live numbers…</span></span>
+      <span>PN 1795673193</span><span>In-app 1795673011</span><span>Launched 26 Nov 2026</span>
+    </div>
+    <p class="take" id="take"><span class="sk">Loading the latest numbers from the campaign.</span></p>
+    <div class="err" id="err" hidden></div>
+  </header>
+
+  <section class="tiles" aria-label="Campaign totals">
+    <div class="tile"><span class="l">CSPs in the campaign</span><span class="v" id="t-cohort">—</span><span class="s">partners with new connections off</span></div>
+    <div class="tile brand"><span class="l">Opened the in-app</span><span class="v" id="t-opened">—</span><span class="s" id="s-opened">&nbsp;</span></div>
+    <div class="tile ok"><span class="l">Resumed new connections</span><span class="v" id="t-resumed">—</span><span class="s" id="s-resumed">&nbsp;</span></div>
+    <div class="tile bad"><span class="l">Don't want new connections</span><span class="v" id="t-declined">—</span><span class="s" id="s-declined">&nbsp;</span></div>
+    <div class="tile"><span class="l">Opened, no decision</span><span class="v" id="t-nodec">—</span><span class="s" id="s-nodec">&nbsp;</span></div>
+  </section>
+
+  <section class="card">
+    <h2>From campaign to decision</h2>
+    <p class="note">Unique CSPs out of the campaign list. Each CSP counts once, on their latest choice.</p>
+    <div class="bars" id="funnel"></div>
+  </section>
+
+  <section class="card">
+    <h2>CleverTap delivery</h2>
+    <div class="ct" id="ct"></div>
+    <p class="note" id="ct-note"></p>
+  </section>
+
+  <div class="grid2">
+    <section class="card">
+      <h2>Opened but didn't decide</h2>
+      <p class="note">How these CSPs left the in-app.</p>
+      <div class="bars" id="exits"></div>
+    </section>
+    <section class="card">
+      <h2>Resume rate by number shown</h2>
+      <p class="note">CSPs who opened, grouped by the missed-bookings number on their screen. "Default 5" means their own number didn't load in time.</p>
+      <div class="bars" id="bynum"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <h2>Why CSPs don't want new connections</h2>
+    <p class="note" id="form-note">&nbsp;</p>
+    <table>
+      <thead><tr><th>Reason</th><th class="r">Sent</th><th class="r">Ticked, not sent</th></tr></thead>
+      <tbody id="reasons"></tbody>
+    </table>
+    <h2 style="margin-top:6px">In their words</h2>
+    <div class="quotes" id="quotes"></div>
+  </section>
+
+  <section class="card">
+    <h2>When CSPs opened it</h2>
+    <p class="note">CSPs by the hour (IST) of their first open.</p>
+    <div class="cols" id="hourly"></div>
+  </section>
+
+  <details>
+    <summary>How these numbers are counted</summary>
+    <p>Counts are unique CSPs from the 169 in the campaign list, read live from the in-app's tracking sheet each time this page loads (and every minute while it stays open). Test opens and opens with no CSP id are left out. <span id="outside"></span> Resumed or declined is the CSP's latest tap on the first screen. "Ticked, not sent" counts reasons ticked by CSPs who skipped or left the reason form. Phone numbers inside typed reasons are masked. CleverTap figures are entered by hand from the campaign pages.</p>
+  </details>
+</div>
+
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyffjR0LvGKYmUKcEvR5Zndliss9aYUUl_YObQ9xQLvguNtmHZoAjrUfee9y2Tq0Q3W/exec';
+  var REFRESH_MS = 60000, TIMEOUT_MS = 20000, lastOk = 0;
+  var fmt = function (n) { return n == null ? '—' : Number(n).toLocaleString('en-IN'); };
+  var pct = function (a, b) { return b ? Math.round((a / b) * 100) + '%' : '0%'; };
+  var $ = function (id) { return document.getElementById(id); };
+  function txt(id, v) { var e = $(id); if (e) e.textContent = v; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  function bars(id, rows, max, cls, label) {
+    var box = $(id); box.replaceChildren();
+    rows.forEach(function (r, i) {
+      var row = el('div', 'bar'), t = el('div', 't'), f = el('div', 'f' + (cls ? ' ' + cls(r, i) : ''));
+      row.appendChild(el('div', 'k', r.k));
+      f.style.width = (max ? Math.max(r.v ? 1.5 : 0, (r.v / max) * 100) : 0) + '%';
+      t.appendChild(f); t.appendChild(el('div', 'n', label ? label(r) : fmt(r.v)));
+      row.appendChild(t); box.appendChild(row);
+    });
+  }
+
+  function render(d) {
+    var openedOf = function (n) { return pct(n, d.opened) + ' of those who opened'; };
+    txt('t-cohort', fmt(d.cohort)); txt('t-opened', fmt(d.opened)); txt('s-opened', pct(d.opened, d.cohort) + ' of the campaign');
+    txt('t-resumed', fmt(d.resumed)); txt('s-resumed', openedOf(d.resumed));
+    txt('t-declined', fmt(d.declined)); txt('s-declined', openedOf(d.declined));
+    txt('t-nodec', fmt(d.no_decision)); txt('s-nodec', openedOf(d.no_decision));
+
+    var take = $('take'); take.replaceChildren();
+    var b = function (v) { return el('b', null, v); };
+    if (!d.opened) take.textContent = 'No CSP from the campaign has opened the in-app yet.';
+    else {
+      take.append(b(fmt(d.opened)), ' of ' + fmt(d.cohort) + ' CSPs have opened the in-app. ', b(fmt(d.resumed)),
+        ' asked to start taking new connections again (' + pct(d.resumed, d.opened) + ' of those who opened), ',
+        b(fmt(d.declined)), ' said they don’t want new connections, and ', b(fmt(d.no_decision)), ' left without choosing.');
+    }
+
+    bars('funnel', [
+      {k: 'In the campaign', v: d.cohort}, {k: 'Opened the in-app', v: d.opened},
+      {k: 'Answered the first screen', v: d.answered}, {k: 'Resumed new connections', v: d.resumed}
+    ], d.cohort, function (r, i) { return i === 3 ? 'ok' : ''; }, function (r) { return fmt(r.v) + ' · ' + pct(r.v, d.cohort); });
+
+    var ex = d.exits || {};
+    bars('exits', [{k: 'Closed with ✕', v: ex.x || 0}, {k: 'Back button', v: ex.back || 0}, {k: 'No close recorded', v: ex.none || 0}],
+      Math.max(1, (ex.x || 0) + (ex.back || 0) + (ex.none || 0)), function () { return 'mute'; });
+
+    bars('bynum', (d.by_number || []).map(function (g) { return {k: g.group, v: g.opened ? g.resumed / g.opened : 0, g: g}; }), 1,
+      function () { return 'ok'; }, function (r) { return r.g.opened ? Math.round(r.v * 100) + '% · ' + r.g.resumed + ' of ' + r.g.opened : 'no CSPs yet'; });
+
+    var fm = d.form || {};
+    txt('form-note', d.declined
+      ? 'From the ' + fmt(d.declined) + ' CSPs who tapped "नए कनेक्शन नहीं चाहिए": ' + fmt(fm.sent) + ' sent reasons, ' + fmt(fm.skipped) + ' skipped, ' + fmt(fm.left) + ' left the form' + (fm.none ? ', ' + fmt(fm.none) + ' no answer yet' : '') + '. A CSP can tick more than one reason.'
+      : 'No CSP has said they don’t want new connections yet.');
+    var tb = $('reasons'); tb.replaceChildren();
+    (d.reasons || []).forEach(function (r) {
+      var tr = el('tr'); tr.appendChild(el('td', null, r.reason)); tr.appendChild(el('td', 'r', fmt(r.sent))); tr.appendChild(el('td', 'r', fmt(r.ticked))); tb.appendChild(tr);
+    });
+    var qs = $('quotes'); qs.replaceChildren();
+    if (!(d.typed || []).length) qs.appendChild(el('p', 'empty', 'No typed reasons yet.'));
+    (d.typed || []).forEach(function (q) {
+      var box = el('div', 'q'); box.appendChild(el('div', null, '“' + q.text + '”'));
+      var who = q.status === 'declined' ? 'Doesn’t want new connections' : q.status === 'resumed' ? 'Later resumed' : 'No decision';
+      box.appendChild(el('div', 'm', who + (q.reasons && q.reasons.length ? ' · ' + q.reasons.join(', ') : '') + ' · ' + q.at));
+      qs.appendChild(box);
+    });
+
+    var hz = $('hourly'); hz.replaceChildren();
+    var hrs = d.hourly || [], hmax = Math.max.apply(null, hrs.map(function (h) { return h.csps; }).concat([1]));
+    if (!hrs.length) hz.appendChild(el('p', 'empty', 'No opens yet.'));
+    hrs.forEach(function (h) {
+      var c = el('div', 'col'), bar = el('div', 'b'), p = h.hour.split(' ');
+      bar.style.height = Math.max(2, (h.csps / hmax) * 110) + 'px';
+      var dt = p[0].split('-'), mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][Number(dt[1]) - 1] || '';
+      c.appendChild(el('div', 'c', fmt(h.csps))); c.appendChild(bar); c.appendChild(el('div', 'h', Number(dt[2]) + ' ' + mon + ' ' + p[1] + ':00'));
+      hz.appendChild(c);
+    });
+
+    var ct = d.clevertap || {}, box = $('ct'); box.replaceChildren();
+    [['PN sent', ct.pn_sent], ['PN delivered', ct.pn_delivered], ['PN clicked', ct.pn_clicked], ['In-app shown', ct.inapp_shown]].forEach(function (x) {
+      var dv = el('div'); dv.appendChild(el('span', null, x[0])); dv.appendChild(el('b', null, fmt(x[1]))); box.appendChild(dv);
+    });
+    txt('ct-note', ct.as_of ? 'From the CleverTap campaign pages, as of ' + ct.as_of + '. CleverTap counts sends and taps, not unique CSPs.' : 'Not entered yet. These come from the CleverTap campaign pages and are added by hand.');
+    txt('outside', d.outside_csps ? fmt(d.outside_csps) + ' CSPs outside the campaign list also opened it and are not counted.' : '');
+  }
+
+  function load() {
+    var cb = '__rw' + Date.now(), s = document.createElement('script'), done = false;
+    var t = setTimeout(function () { finish(null, 'The numbers took too long to load.'); }, TIMEOUT_MS);
+    function finish(d, msg) {
+      if (done) return; done = true; clearTimeout(t);
+      try { delete window[cb]; } catch (e) { window[cb] = undefined; }
+      if (s.parentNode) s.parentNode.removeChild(s);
+      var err = $('err');
+      if (d && !d.error) {
+        lastOk = Date.now(); render(d); err.hidden = true;
+        var u = new Date(d.updated || Date.now());
+        txt('updated', 'Live · updated ' + u.toLocaleTimeString('en-IN', {hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata'}) + ' IST');
+        $('dot').className = 'dot';
+      } else {
+        $('dot').className = 'dot stale';
+        err.hidden = false;
+        err.textContent = (lastOk ? 'Couldn’t refresh, showing the last numbers. ' : 'Couldn’t load the numbers. ') + (msg || (d && d.error) || '') + ' The page tries again every minute.';
+        if (!lastOk) txt('updated', 'Not loaded');
+      }
+    }
+    window[cb] = function (d) { finish(d); };
+    s.onerror = function () { finish(null, 'The data service didn’t answer.'); };
+    s.src = ENDPOINT + '?action=campaign&callback=' + cb + '&_=' + Date.now();
+    document.body.appendChild(s);
+  }
+  load();
+  setInterval(load, REFRESH_MS);
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && Date.now() - lastOk > REFRESH_MS) load(); });
+})();
+</script>
+</body>
+</html>
