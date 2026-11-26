@@ -65,6 +65,7 @@ td.r,th.r{text-align:right}
 .ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
 .ct div{display:flex;flex-direction:column}
 .ct span{font-size:12px;color:var(--muted)}
+.ct div span:last-child:not(:first-child){font-variant-numeric:tabular-nums}
 .ct b{font-size:22px;font-variant-numeric:tabular-nums}
 .empty{font-size:14px;color:var(--muted)}
 .err{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:10px 12px;font-size:14px}
@@ -100,11 +101,22 @@ details summary{cursor:pointer;color:var(--fg)}
     <div class="bars" id="funnel"></div>
   </section>
 
-  <section class="card">
-    <h2>CleverTap delivery</h2>
-    <div class="ct" id="ct"></div>
-    <p class="note" id="ct-note"></p>
-  </section>
+  <div class="grid2">
+    <section class="card">
+      <h2>CleverTap delivery</h2>
+      <div class="ct" id="ct"></div>
+      <p class="note" id="ct-note"></p>
+    </section>
+    <section class="card">
+      <h2>Did the PN help?</h2>
+      <p class="note">Campaign CSPs who clicked the PN, compared with those who didn't.</p>
+      <table>
+        <thead><tr><th></th><th class="r">CSPs</th><th class="r">Opened in-app</th><th class="r">Resumed</th></tr></thead>
+        <tbody id="pn"></tbody>
+      </table>
+      <p class="note" id="pn-note"></p>
+    </section>
+  </div>
 
   <div class="grid2">
     <section class="card">
@@ -219,11 +231,26 @@ details summary{cursor:pointer;color:var(--fg)}
       hz.appendChild(c);
     });
 
-    var ct = d.clevertap || {}, box = $('ct'); box.replaceChildren();
-    [['PN sent', ct.pn_sent], ['PN delivered', ct.pn_delivered], ['PN clicked', ct.pn_clicked], ['In-app shown', ct.inapp_shown]].forEach(function (x) {
-      var dv = el('div'); dv.appendChild(el('span', null, x[0])); dv.appendChild(el('b', null, fmt(x[1]))); box.appendChild(dv);
+    var live = d.ct_live || {}, man = d.clevertap || {}, box = $('ct'); box.replaceChildren();
+    var tiles = [['Clicked the PN', live.pn_clicked_csps, live.pn_click_taps != null ? fmt(live.pn_click_taps) + ' taps' : ''],
+                 ['Shown the in-app', live.inapp_shown_csps, live.inapp_views != null ? fmt(live.inapp_views) + ' views' : '']];
+    if (man.pn_sent != null) tiles.unshift(['PN sent', man.pn_sent, man.as_of ? 'as of ' + man.as_of : '']);
+    tiles.forEach(function (x) {
+      var dv = el('div'); dv.appendChild(el('span', null, x[0])); dv.appendChild(el('b', null, fmt(x[1]))); if (x[2]) dv.appendChild(el('span', null, x[2])); box.appendChild(dv);
     });
-    txt('ct-note', ct.as_of ? 'From the CleverTap campaign pages, as of ' + ct.as_of + '. CleverTap counts sends and taps, not unique CSPs.' : 'Not entered yet. These come from the CleverTap campaign pages and are added by hand.');
+    txt('ct-note', live.error ? 'CleverTap numbers are unavailable right now: ' + live.error
+      : 'Unique CSPs, live from CleverTap (refreshed every 5 minutes). PN 1795673193 · in-app 1795673011. CleverTap does not report how many PNs were delivered.');
+    var pb = $('pn'); pb.replaceChildren();
+    if (d.pn) {
+      [['Clicked the PN', d.pn.clickers], ['Didn\u2019t click', d.pn.non_clickers]].forEach(function (x) {
+        var tr = el('tr'), g = x[1];
+        tr.appendChild(el('td', null, x[0])); tr.appendChild(el('td', 'r', fmt(g.csps)));
+        tr.appendChild(el('td', 'r', fmt(g.opened) + ' (' + pct(g.opened, g.csps) + ')'));
+        tr.appendChild(el('td', 'r', fmt(g.resumed) + ' (' + pct(g.resumed, g.csps) + ')'));
+        pb.appendChild(tr);
+      });
+      txt('pn-note', 'Percentages are of each group. CSPs who didn\u2019t click can still see the in-app when they open the app.');
+    } else txt('pn-note', 'Waiting for CleverTap numbers.');
     txt('outside', d.outside_csps ? fmt(d.outside_csps) + ' CSPs outside the campaign list also opened it and are not counted.' : '');
   }
 
